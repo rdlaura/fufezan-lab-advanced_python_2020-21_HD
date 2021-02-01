@@ -1,0 +1,9 @@
+pandas
+jupyter
+plotly
+rise
+lxml
+pytest
+pytest-cov
+sphinx
+openpyxl
