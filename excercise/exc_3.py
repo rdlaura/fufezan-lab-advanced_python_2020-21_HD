@@ -9,6 +9,12 @@ with open("../data/GP183_human.fasta") as gp:
         print(line)
         break
 
+with open("../data/amino_acid_properties.csv") as aap:
+    aap = csv.DictReader(aap, delimiter=",")
+    for line in aap:
+        print(line)
+        break
+
 
 def aa_count(fasta_data):
     sq = ""
