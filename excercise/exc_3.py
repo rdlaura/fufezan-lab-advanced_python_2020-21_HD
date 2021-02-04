@@ -49,7 +49,7 @@ def get_hpy_sq(sq, mppg_dict):
         i += 1
     return hpy_sq
 
-# todo later
+# maybe do later
 # def get_aa_name(sq,aa_data):
 
 
