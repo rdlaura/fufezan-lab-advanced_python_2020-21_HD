@@ -24,10 +24,37 @@ def get_lookup_dict(aap_data):
     return lookup_dict
 
 
-class protein(object):
-    # todo: documentation
+class protein:
+    """
+    The class protein allows for analysing and
+    ...
+    Attributes
+    ----------
+    protein_id: str
+        identifying code used by uniprot to assign a specific pos to the protein that is being looked up
+    lookup_dict: dict
+        dictionary providing the aminoacid to value references of the chosen properties
+    sq: str
+        protein sequence
 
+    Methods
+    -------
+    def get_data():
+        pulls sequence form uniprot based on the protein id
+    def map(self, prop):
+        builds a list of values using the sequence and mapping dict to link sequence and values
+    def map_sld_wdw(self, prop, wd):
+        builds a list of property values following the sequence using a sliding window
+    def plot(self, prop, sld=False, wd=None):
+        plots a selected properties values against the sq of the protein that was created as instance
+        the plot will be shown in a browser setting
+    """
     def __init__(self, protein_id, lookup_dict):
+        """
+        initialize protein class
+        :param protein_id: identifying code used by uniprot to assign a specific pos to the protein that is being looked up
+        :param lookup_dict: dictionary providing the aminoacid to value references of the chosen properties
+        """
         self.protein_id = protein_id
         self.lookup_dict = lookup_dict
         self.sq = self.get_data()
@@ -36,9 +63,10 @@ class protein(object):
         """
         [A] pulls sq form uniprot given an id
         name inspired by paul for prettyness
-        :param protein_id: identifying code used by uniprot to assign a specific pos to the protein that is being looked up
         :return: said proteins sq
         """
+
+        # Paul
 
         url = "https://www.uniprot.org/uniprot/" + self.protein_id + ".fasta?fil=reviewed:yes"
         # not entirely sure why
@@ -76,7 +104,6 @@ class protein(object):
     def map(self, prop):
         """
         [B] builds a list of values using the sq and mapping dict to link sq and values
-        # :param lookup_dict: dictionary mapping aa in 1 letter code to value for each property
         :param prop: property to be analysed
         :return: prop_val_sq: property value sq
         """
@@ -88,7 +115,6 @@ class protein(object):
     def map_sld_wdw(self, prop, wd):
         """
         [D] builds list of property values following sq using a sliding window
-        # :param lookup_dict: dictionary mapping aa in 1 letter code to value for each property
         :param prop: property to be analysed
         :param wd: width of analysing window
         :return:
@@ -104,6 +130,14 @@ class protein(object):
 
     # [C] plot
     def plot(self, prop, sld=False, wd=None):
+        """
+        plots a selected properties values against the sq of the protein that was created as instance
+        the plot will be shown in a browser setting
+        :param prop: name of the property of the aminoacid properties that we want to plot
+        :param sld: do you want to use a sliding window approach please set this to True
+        :param wd: width of the sliding window should you decide to go with said option
+        :return:
+        """
         nb_sq = []
         # val_sq = []
 
@@ -142,6 +176,7 @@ class protein(object):
 
         fig = go.Figure(data=data, layout=layout)
         fig.show()
+        return
 
 
 if __name__ == "__main__":
