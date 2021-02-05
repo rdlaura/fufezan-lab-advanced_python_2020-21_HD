@@ -1,9 +1,5 @@
-import csv
-from collections import Counter
-import plotly
 import plotly.graph_objects as go
 import pandas as pd
-import itertools
 import requests
 
 
