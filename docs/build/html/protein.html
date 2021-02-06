@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protein module &#8212; needcoffee 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to needcoffee’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="protein-module">
+<span id="protein-rst"></span><h1>Protein module<a class="headerlink" href="#protein-module" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-needcoffee.protein"></span><dl class="py function">
+<dt id="needcoffee.protein.get_lookup_dict">
+<code class="sig-prename descclassname">needcoffee.protein.</code><code class="sig-name descname">get_lookup_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">aap_data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.get_lookup_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>build dict out of aminoacid properties dataframe
+:param aap_data:
+:return: lookup_dict: holdes mapping dicts for diff properties</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="needcoffee.protein.protein">
+<em class="property">class </em><code class="sig-prename descclassname">needcoffee.protein.</code><code class="sig-name descname">protein</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">protein_id</span></em>, <em class="sig-param"><span class="n">lookup_dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.protein" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class protein allows for analysing and
+…
+.. attribute:: protein_id</p>
+<blockquote>
+<div><p>identifying code used by uniprot to assign a specific pos to the protein that is being looked up</p>
+<dl class="field-list simple">
+<dt class="field-odd">type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt id="needcoffee.protein.protein.lookup_dict">
+<code class="sig-name descname">lookup_dict</code><a class="headerlink" href="#needcoffee.protein.protein.lookup_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>dictionary providing the aminoacid to value references of the chosen properties</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="needcoffee.protein.protein.sq">
+<code class="sig-name descname">sq</code><a class="headerlink" href="#needcoffee.protein.protein.sq" title="Permalink to this definition">¶</a></dt>
+<dd><p>protein sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">def get_data():</code></dt>
+<dd><p>pulls sequence form uniprot based on the protein id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">def map(self, prop):</code></dt>
+<dd><p>builds a list of values using the sequence and mapping dict to link sequence and values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">def map_sld_wdw(self, prop, wd):</code></dt>
+<dd><p>builds a list of property values following the sequence using a sliding window</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">def plot(self, prop, sld=False, wd=None):</code></dt>
+<dd><p>plots a selected properties values against the sq of the protein that was created as instance
+the plot will be shown in a browser setting</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="needcoffee.protein.protein.get_data">
+<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.protein.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>[A] pulls sq form uniprot given an id
+name inspired by paul for prettyness
+:return: said proteins sq</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="needcoffee.protein.protein.map">
+<code class="sig-name descname">map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prop</span></em><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.protein.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>[B] builds a list of values using the sq and mapping dict to link sq and values
+:param prop: property to be analysed
+:return: prop_val_sq: property value sq</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="needcoffee.protein.protein.map_sld_wdw">
+<code class="sig-name descname">map_sld_wdw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prop</span></em>, <em class="sig-param"><span class="n">wd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.protein.map_sld_wdw" title="Permalink to this definition">¶</a></dt>
+<dd><p>[D] builds list of property values following sq using a sliding window
+:param prop: property to be analysed
+:param wd: width of analysing window
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="needcoffee.protein.protein.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prop</span></em>, <em class="sig-param"><span class="n">sld</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">wd</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#needcoffee.protein.protein.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>plots a selected properties values against the sq of the protein that was created as instance
+the plot will be shown in a browser setting
+:param prop: name of the property of the aminoacid properties that we want to plot
+:param sld: do you want to use a sliding window approach please set this to True
+:param wd: width of the sliding window should you decide to go with said option
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">needcoffee</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Protein module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to needcoffee’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, LR.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/protein.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
