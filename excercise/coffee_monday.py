@@ -1,5 +1,7 @@
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.io as pio
+pio.renderers.default = "browser"
 
 df = pd.read_csv("../data/arabica_data_cleaned.csv", index_col=0)
 
