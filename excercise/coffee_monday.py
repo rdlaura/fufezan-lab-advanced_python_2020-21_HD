@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import plotly
 import plotly.graph_objects as go
 
 df = pd.read_csv("../data/arabica_data_cleaned.csv", index_col=0)
@@ -49,10 +47,10 @@ for c in espresso.columns:
 
     layout = {
         "title": {
-            "text": f"Histogram of {c}"
+            "text": "Histogram"
         },
         "xaxis": {
-            "title": c.replace("_", " ")
+            "title": c
         },
         "yaxis": {
             "title": "count"
