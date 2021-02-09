@@ -22,47 +22,47 @@ columns = ["country_of_origin", "producer", "processing_method"]
 espresso.columns = columns
 
 # plot
-# for c in espresso.columns:
-#     # print(espresso[c].value_counts())
-#     counts = espresso[c].value_counts()
-#
-#     # print(counts.axes)
-#     # print(counts.values)
-#
-#     # x_lst = counts.axes  # it could be so easy
-#     # y_lst = counts.values
-#
-#     x_lst = espresso[c].dropna().unique()
-#     y_lst = []
-#     for i in x_lst:
-#         y_lst.append(counts.loc[i])
-#
-#     print(x_lst)
-#     print(y_lst)
-#
-#     data = [
-#         go.Bar(
-#             x=x_lst,
-#             y=y_lst
-#         )
-#     ]
-#
-#     layout = {
-#         "title": {
-#             "text": f"Histogram of {c}"
-#         },
-#         "xaxis": {
-#             "title": c.replace("_", " ")
-#         },
-#         "yaxis": {
-#             "title": "count"
-#         }
-#     }
-#
-#     fig = go.Figure(data=data, layout=layout)
-#     fig.show()
-#     print("yay")
-#     break
+for c in espresso.columns:
+    # print(espresso[c].value_counts())
+    counts = espresso[c].value_counts()
+
+    # print(counts.axes)
+    # print(counts.values)
+
+    # x_lst = counts.axes  # it could be so easy
+    # y_lst = counts.values
+
+    x_lst = espresso[c].dropna().unique()
+    y_lst = []
+    for i in x_lst:
+        y_lst.append(counts.loc[i])
+
+    print(x_lst)
+    print(y_lst)
+
+    data = [
+        go.Bar(
+            x=x_lst,
+            y=y_lst
+        )
+    ]
+
+    layout = {
+        "title": {
+            "text": f"Histogram of {c}"
+        },
+        "xaxis": {
+            "title": c.replace("_", " ")
+        },
+        "yaxis": {
+            "title": "count"
+        }
+    }
+
+    fig = go.Figure(data=data, layout=layout)
+    fig.show()
+    print("yay")
+    break
 
 # print(espresso)
 
@@ -84,8 +84,8 @@ espresso.columns = columns
 # print(prd_c[:1])
 
 # most and least common processing method
-pr_m_c = espresso["processing_method"].value_counts()
-print(pr_m_c)
-print(pr_m_c[:1])
-print(pr_m_c[pr_m_c.size-1:pr_m_c.size])  # ugly but it works
+# pr_m_c = espresso["processing_method"].value_counts()
+# print(pr_m_c)
+# print(pr_m_c[:1])
+# print(pr_m_c[pr_m_c.size-1:pr_m_c.size])  # ugly but it works
 
