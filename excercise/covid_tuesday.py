@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 import ssl
 import json
 import urllib
@@ -38,8 +39,8 @@ cdf["14d_incidence"] = pd.to_numeric(cdf["14d_incidence"])  # convert 14 day inc
 
 # add new column for delta time --> delta time since start of recording
 # find start of recording
-cdf.date_reported.idxmin()  # Out: Timestamp('2020-01-06 00:00:00')
-strg_date = cdf.date_reported[35]
+# cdf.date_reported.idxmin()  # Out: Timestamp('2020-01-06 00:00:00')
+strg_date = cdf.date_reported[cdf.date_reported.idxmin()]
 
 cdf["delta_t"] = cdf.date_reported - strg_date
 
@@ -57,6 +58,18 @@ cdf = cdf[cdf["14d_incidence"] >= 0]
 # drop pop_2019 --> 10185
 # drop 14d_incidence --> 10182
 # summed up: dropped 251 rows
+
+
+# firstly drop everything from 2021 --> 9119
+# cdf = cdf[cdf.date_reported.dt.year <= 2020]
+
+# check for dates
+# today = datetime.datetime.now()  # Out: datetime.datetime(2021, 2, 10, 14, 50, 45, 791778)
+# dates might be from 2020, 12, 14 --> using that as ref point
+cut = pd.to_datetime('2020-12-14 00:00:00')
+
+# cdf.date_reported <= cut --> False for 424 (after running year)
+cdf = cdf[cdf.date_reported < cut]  # < because from day cut no more data was fed, idxmax afterwards --> 2020 12 10
 
 # group
 
