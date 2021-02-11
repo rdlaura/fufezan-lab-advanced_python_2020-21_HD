@@ -4,6 +4,10 @@ import ssl
 import json
 import urllib
 
+import plotly.graph_objects as go
+import plotly.io as pio
+pio.renderers.default = "browser"
+
 # retrieve covid data from ecdc
 
 covid_url = "https://opendata.ecdc.europa.eu/covid19/casedistribution/json/"
