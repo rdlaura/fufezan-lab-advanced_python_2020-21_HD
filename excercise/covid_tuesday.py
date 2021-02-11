@@ -152,3 +152,6 @@ fig.update_layout({
         })
 
 # fig.show()  # done --> yay
+
+# smoothed version of the plot avg 3 months
+
