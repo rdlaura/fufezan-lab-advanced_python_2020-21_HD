@@ -72,4 +72,13 @@ cut = pd.to_datetime('2020-12-14 00:00:00')
 cdf = cdf[cdf.date_reported < cut]  # < because from day cut no more data was fed, idxmax afterwards --> 2020 12 10
 
 # group
-
+# grp_col = ['continent', 'region', 'date_reported', 'delta_t', '14d_incidence']
+# grp = cdf[grp_col].groupby(['continent', 'region'])
+#
+# for continent, cont_continent in grp:
+#     # print(continent)
+#     for region, cont_region in cont_continent:
+#         # print(region)
+#         d = cont_region['14d_incidence'].diff().fillna(0)
+#         min_d = min(d)  # decrease
+#         max_d = max(d)  # increase
