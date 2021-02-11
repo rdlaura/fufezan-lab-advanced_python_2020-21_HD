@@ -82,3 +82,31 @@ cdf = cdf[cdf.date_reported < cut]  # < because from day cut no more data was fe
 #         d = cont_region['14d_incidence'].diff().fillna(0)
 #         min_d = min(d)  # decrease
 #         max_d = max(d)  # increase
+
+# a new attempt
+# note all data from 2020, so in one year
+help_lst = []
+
+for continent, cont_continent in cdf.groupby('continent'):
+    for region, cont_region in cont_continent.groupby('region'):
+        d = cont_region.set_index('delta_t').sort_index()['14d_incidence'].diff().fillna(0)
+        min_d = min(d)  # decrease
+        max_d = max(d)  # increase
+        help_lst.append([continent, region, min_d, max_d])
+
+# transform into dataframe
+frame = pd.DataFrame(help_lst, columns=['continent', 'region', 'decrease', 'increase'])
+
+# find the max de- and increase
+help_lst_cont = []
+
+for continent, cont_continent in frame.groupby('continent'):
+    r_dec = frame.region.iloc[cont_continent.decrease.idxmin]
+    dec = min(cont_continent.decrease)
+    r_inc = frame.region.iloc[cont_continent.increase.idxmax]
+    inc = max(cont_continent.increase)
+    help_lst_cont.append([continent, r_dec, dec, r_inc, inc])
+
+fluctuation = pd.DataFrame(help_lst_cont,
+                           columns=['continent', 'highest decrease region', 'decrease',
+                                    'highest increase region', 'increase'])
