@@ -36,8 +36,8 @@ cdf.rename(
 )
 
 # get the types straight
-cdf['date_reported'] = pd.to_datetime(cdf['rep_date'])
-cdf['date_reported'].dt.day.head()
+cdf['date_reported'] = pd.to_datetime(cdf['rep_date'], format='%d/%m/%Y', errors='raise')  # fix date format
+# cdf['date_reported'].dt.day.head()
 
 cdf["14d_incidence"] = pd.to_numeric(cdf["14d_incidence"])  # convert 14 day incidence into float64
 
@@ -49,31 +49,21 @@ strg_date = cdf.date_reported[cdf.date_reported.idxmin()]
 cdf["delta_t"] = cdf.date_reported - strg_date
 
 # spot shit and fix it
-cdf.dropna(inplace=True)  # 10433 to 10195
+cdf.dropna(inplace=True)  # 10647 to 10408
 
 # cdf = cdf[cdf.cases_weekly >= 0 and cdf.deaths_weekly >= 0 and cdf.pop_2019 >= 0 and cdf["14d_incidence"] >= 0]
-cdf = cdf[cdf.cases_weekly >= 0]
-cdf = cdf[cdf.deaths_weekly >= 0]
+cdf = cdf[cdf.cases_weekly >= 0]  # 10400
+cdf = cdf[cdf.deaths_weekly >= 0]  # 10398
 cdf = cdf[cdf.pop_2019 >= 0]
-cdf = cdf[cdf["14d_incidence"] >= 0]
+cdf = cdf[cdf["14d_incidence"] >= 0]  # 10395
 
-# drop cdf.cases_weekly --> 10187
-# drop deaths_weekly --> 10185
-# drop pop_2019 --> 10185
-# drop 14d_incidence --> 10182
-# summed up: dropped 251 rows
-
-
-# firstly drop everything from 2021 --> 9119
-# cdf = cdf[cdf.date_reported.dt.year <= 2020]
-
-# check for dates
+# check for too new dates
 # today = datetime.datetime.now()  # Out: datetime.datetime(2021, 2, 10, 14, 50, 45, 791778)
-# dates might be from 2020, 12, 14 --> using that as ref point
-cut = pd.to_datetime('2020-12-14 00:00:00')
+cut = pd.to_datetime(datetime.datetime.now())
+print('today is the ' + str(cut))
 
-# cdf.date_reported <= cut --> False for 424 (after running year)
-cdf = cdf[cdf.date_reported < cut]  # < because from day cut no more data was fed, idxmax afterwards --> 2020 12 10
+# cdf.date_reported <= cut
+cdf = cdf[cdf.date_reported < cut]  # 10395 --> no cuts because dates checked in correctly
 
 # group
 # grp_col = ['continent', 'region', 'date_reported', 'delta_t', '14d_incidence']
