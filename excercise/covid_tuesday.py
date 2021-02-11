@@ -114,3 +114,41 @@ for continent, cont_continent in frame.groupby('continent'):
 fluctuation = pd.DataFrame(help_lst_cont,
                            columns=['continent', 'highest decrease region', 'decrease',
                                     'highest increase region', 'increase'])
+
+# overall fluctuation
+o_a_dec = (fluctuation['highest decrease region'].iloc[fluctuation['decrease'].idxmin], min(fluctuation['decrease']))
+o_a_inc = (fluctuation['highest increase region'].iloc[fluctuation['increase'].idxmax], max(fluctuation['increase']))
+
+# print('The region with the overall lowest flucuation of the 14 days incidence was ' + str(o_a_dec[0]) +
+#       ' with a decrease of ' + str(o_a_dec[1]))
+# print('The region with the overall highest flucuation of the 14 days incidence was ' + str(o_a_inc[0]) +
+#       ' with an increase of ' + str(round(o_a_inc[1], 2)))
+
+# plot incidence of european countries
+continent = 'Europe'
+continent_grp = cdf.groupby('continent').get_group(continent)
+
+# create figure and add trace for each country
+fig = go.Figure()
+
+for region, cont_region in continent_grp.groupby('region'):
+    fig.add_trace(go.Scatter(
+        x=cont_region.set_index('delta_t').sort_index()['date_reported'],
+        y=cont_region.set_index('delta_t').sort_index()['14d_incidence'],
+        mode='lines',
+        name=region
+    ))
+
+fig.update_layout({
+            "title": {
+                "text": '14 day incidence in ' + str(continent)
+            },
+            "xaxis": {
+                "title": 'Time'
+            },
+            "yaxis": {
+                "title": '14 day incidence'
+            }
+        })
+
+# fig.show()  # done --> yay
