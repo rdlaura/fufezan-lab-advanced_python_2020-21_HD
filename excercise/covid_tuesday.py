@@ -6,6 +6,7 @@ import urllib
 
 import plotly.graph_objects as go
 import plotly.io as pio
+
 pio.renderers.default = "browser"
 
 # retrieve covid data from ecdc
@@ -78,36 +79,64 @@ cdf = cdf[cdf.date_reported < cut]  # 10395 --> no cuts because dates checked in
 #         max_d = max(d)  # increase
 
 # a new attempt
-# note all data from 2020, so in one year
+# help_lst = []
+#
+# for continent, cont_continent in cdf.groupby('continent'):
+#     for region, cont_region in cont_continent.groupby('region'):
+#         d = cont_region.set_index('delta_t').sort_index()['14d_incidence'].diff().fillna(0)
+#         min_d = min(d)  # decrease
+#         max_d = max(d)  # increase
+#         help_lst.append([continent, region, min_d, max_d])
+#
+# # transform into dataframe
+# frame = pd.DataFrame(help_lst, columns=['continent', 'region', 'decrease', 'increase'])
+#
+# # find the max de- and increase
+# help_lst_cont = []
+#
+# for continent, cont_continent in frame.groupby('continent'):
+#     r_dec = frame.region.iloc[cont_continent.decrease.idxmin]
+#     dec = min(cont_continent.decrease)
+#     r_inc = frame.region.iloc[cont_continent.increase.idxmax]
+#     inc = max(cont_continent.increase)
+#     help_lst_cont.append([continent, r_dec, dec, r_inc, inc])
+#
+# fluctuation = pd.DataFrame(help_lst_cont,
+#                            columns=['continent', 'highest decrease region', 'decrease',
+#                                     'highest increase region', 'increase'])
+
+# overall fluctuation
+# o_a_dec = (fluctuation['highest decrease region'].iloc[fluctuation['decrease'].idxmin], min(fluctuation['decrease']))
+# o_a_inc = (fluctuation['highest increase region'].iloc[fluctuation['increase'].idxmax], max(fluctuation['increase']))
+
+# attempt considering year
+
 help_lst = []
 
 for continent, cont_continent in cdf.groupby('continent'):
     for region, cont_region in cont_continent.groupby('region'):
-        d = cont_region.set_index('delta_t').sort_index()['14d_incidence'].diff().fillna(0)
-        min_d = min(d)  # decrease
-        max_d = max(d)  # increase
-        help_lst.append([continent, region, min_d, max_d])
+        for year, cont_year in cont_region.groupby('year'):
+            d = cont_year.set_index('delta_t').sort_index()['14d_incidence'].diff().fillna(0)
+            min_d = min(d)  # decrease
+            max_d = max(d)  # increase
+            help_lst.append([continent, year, region, min_d, max_d])
 
 # transform into dataframe
-frame = pd.DataFrame(help_lst, columns=['continent', 'region', 'decrease', 'increase'])
+frame_by_year = pd.DataFrame(help_lst, columns=['continent', 'year', 'region', 'decrease', 'increase'])
 
 # find the max de- and increase
 help_lst_cont = []
 
-for continent, cont_continent in frame.groupby('continent'):
-    r_dec = frame.region.iloc[cont_continent.decrease.idxmin]
-    dec = min(cont_continent.decrease)
-    r_inc = frame.region.iloc[cont_continent.increase.idxmax]
-    inc = max(cont_continent.increase)
-    help_lst_cont.append([continent, r_dec, dec, r_inc, inc])
+for year, cont_year in frame_by_year.groupby('year'):
+    r_dec = frame_by_year.region.iloc[cont_year.decrease.idxmin]
+    dec = min(cont_year.decrease)
+    r_inc = frame_by_year.region.iloc[cont_year.increase.idxmax]
+    inc = max(cont_year.increase)
+    help_lst_cont.append([year, r_dec, dec, r_inc, inc])
 
-fluctuation = pd.DataFrame(help_lst_cont,
-                           columns=['continent', 'highest decrease region', 'decrease',
-                                    'highest increase region', 'increase'])
-
-# overall fluctuation
-o_a_dec = (fluctuation['highest decrease region'].iloc[fluctuation['decrease'].idxmin], min(fluctuation['decrease']))
-o_a_inc = (fluctuation['highest increase region'].iloc[fluctuation['increase'].idxmax], max(fluctuation['increase']))
+fluctuation_by_year = pd.DataFrame(help_lst_cont,
+                                   columns=['year', 'highest decrease region', 'decrease',
+                                            'highest increase region', 'increase'])
 
 # print('The region with the overall lowest flucuation of the 14 days incidence was ' + str(o_a_dec[0]) +
 #       ' with a decrease of ' + str(o_a_dec[1]))
@@ -130,18 +159,17 @@ for region, cont_region in continent_grp.groupby('region'):
     ))
 
 fig.update_layout({
-            "title": {
-                "text": '14 day incidence in ' + str(continent)
-            },
-            "xaxis": {
-                "title": 'Time'
-            },
-            "yaxis": {
-                "title": '14 day incidence'
-            }
-        })
+    "title": {
+        "text": '14 day incidence in ' + str(continent)
+    },
+    "xaxis": {
+        "title": 'Time'
+    },
+    "yaxis": {
+        "title": '14 day incidence'
+    }
+})
 
 # fig.show()  # done --> yay
 
 # smoothed version of the plot avg 3 months
-
