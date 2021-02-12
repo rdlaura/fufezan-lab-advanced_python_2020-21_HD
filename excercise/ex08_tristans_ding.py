@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import timeit
 
@@ -6,7 +5,7 @@ import timeit
 def msp_to_df(
         input_file,
         max_seq_len=30,
-        min_ce=30,  # todo: set back to 36
+        min_ce=36,  # todo: set back to 36
         max_ce=40,
         mz_min=135,
         mz_max=1400,
@@ -33,6 +32,14 @@ def msp_to_df(
     spectra = msp_data.split('\n\n')  # split @ empty lines --> list:17852
     spectra = spectra[:-1]  # get rid of empty spectrum
 
+    sq_lst = []
+    data = []
+    # mz_lst = []
+    # it_lst = []
+    cols = []
+    # big_df = pd.DataFrame()+
+    frame = pd.DataFrame()
+
     for i, spectrum in enumerate(spectra):
         # find collision energy
         line = spectrum.split('\n')[0]  # slice in lines and choose the first one
@@ -47,44 +54,56 @@ def msp_to_df(
             # select sequences short enough to fit the requirements
             if len(sq) <= max_seq_len:
                 # find m/z ratio
-                sp_d = spectrum.split('\n')[4:]  # get to the actual spectrum data
+                sp_d = spectrum.split('\n')[4:]  # get to the actual spectrum data, post comment
+                sq_lst.append([i, sq])
 
-                # add m/z and intensity binned (int) into list of lists
-                # note: use append
-                data = []
+                # add m/z and intensity binned (int) into list of lists (append) --> data
 
                 for j, spectrum_data in enumerate(sp_d):
-                    mz = int(spectrum_data.split('\t')[0])
+                    mz = int(float(spectrum_data.split('\t')[0]))
 
                     # select m/z ration to fit reqs
                     if mz_min <= mz <= mz_max:
-                        print(mz)
+                        # print(mz)
 
-                        it = int(spectrum_data.split('\t')[1])
+                        it = int(float(spectrum_data.split('\t')[1]))
+                        cols.append(i)  # if it looks weird try j
 
-                        mz_a = None
-                        it_a = None
+                        mz_a = 0  # maybe default None
+                        it_a = 0
                         if mz == mz_a:
                             if it > it_a:
                                 data.pop(-1)
-                                data.append([mz, it])
+                                data.append([i, mz, it])
+                                # it_lst.pop(-1)
+                                # it_lst.append(it)
+                                # frame.loc[i, mz] = it
                                 it_a = it
-                            # else:
-                            #     continue
                         else:
-                            data.append([mz, it])
+                            data.append([i, mz, it])
+                            # mz_lst.append(mz)
+                            # it_lst.append(it)
+                            # frame.loc[i, mz] = it
                             mz_a = mz  # achieved values to compare new ones
                             it_a = it
+        # big_df = pd.DataFrame()
+        # # big_df.loc[i] = it_lst
+        # big_df.append(it_lst)
 
-                    break
-        break
+    # df = pd.DataFrame(data)  # , index=[0], columns=[1])  # .T.dropna(how='all').fillna(0)
+    # todo: put inplace=True
 
-    df = None
-    seqs = None
+    # help_df = pd.DataFrame(data).rename(columns={0: 'spectra', 1: 'mz', 2: 'it'})
+
+    df = data
+    seqs = pd.DataFrame(sq_lst).set_index(0).rename(columns={1: 'sequence'})  # , inplace=True)  # todo: check and set
 
     return df, seqs
 
 
 if __name__ == '__main__':
     input_file = 'C:/Users/laura/PycharmProjects/fufezan-lab-advanced_python_2020-21_HD_fork/data' \
-                 '/cptac2_mouse_hcd_selected.msp'
+                 '/cptac2_mouse_hcd_selected_copy.msp'
+    r = msp_to_df(input_file)
+    print('dataframe \n', r[0])
+    print('sequence \n', r[1])
