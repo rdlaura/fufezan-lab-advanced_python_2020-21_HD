@@ -1,7 +1,10 @@
-import plotly.graph_objects as go
 import pandas as pd
 import requests
 
+import plotly.graph_objects as go
+import plotly.io as pio
+
+pio.renderers.default = "browser"
 
 def get_lookup_dict(aap_data):
     """
@@ -62,8 +65,7 @@ class protein:
         :return: said proteins sq
         """
 
-        # Paul
-
+        # recycle
         url = "https://www.uniprot.org/uniprot/" + self.protein_id + ".fasta?fil=reviewed:yes"
         # not entirely sure why
         r = requests.get(url)
@@ -71,23 +73,7 @@ class protein:
         # maybe integrate protein name later
         protein_file = "../data/" + self.protein_id + ".fasta"
 
-        # Paul
-
-        # with open(protein_file, "wb") as file:
-        #     file.write(r.content)
-        #     file.close()  # ?? doesnt with close the file anyways
-
-        # with open(protein_file) as file:
-        #     sq = []
-        #     file_dict = csv.reader(file, delimiter="\n")
-        #     for line in file_dict:
-        #         if ">" not in line[0]:
-        #             sq = sq + line[0]
-        #         else:
-        #             # seq_list.append(seq)
-        #             sq = ""
-
-        # recycle from exc_3
+        # recycle from ex03
         with open(protein_file) as file:
             sq = ""
             for help_line in file:
