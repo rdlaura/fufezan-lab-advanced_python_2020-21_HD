@@ -6,10 +6,11 @@ import plotly.io as pio
 
 pio.renderers.default = "browser"
 
+
 def get_lookup_dict(aap_data):
     """
     build dict out of aminoacid properties dataframe
-    :param aap_data:
+    :param aap_data: amino acid properties
     :return: lookup_dict: holdes mapping dicts for diff properties
     """
     lookup_dict = {}
@@ -48,6 +49,7 @@ class Protein:
         plots a selected properties values against the sq of the protein that was created as instance
         the plot will be shown in a browser setting
     """
+
     def __init__(self, protein_id, lookup_dict):
         """
         initialize protein class
@@ -132,7 +134,7 @@ class Protein:
 
         if not sld:
             val_sq = self.map(prop)
-            info = ''
+            info = ""
         if sld:
             val_sq = self.map_sld_wdw(prop, wd)
             info = " using a sliding window of the width " + str(wd)
@@ -157,7 +159,7 @@ class Protein:
         }
 
         fig = go.Figure(data=data, layout=layout)
-        fig.show()
+        # fig.show()
         return fig
 
 
