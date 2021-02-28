@@ -23,7 +23,7 @@ def get_lookup_dict(aap_data):
     return lookup_dict
 
 
-class protein:
+class Protein:
     """
     The class protein allows for analysing and
     ...
@@ -132,7 +132,7 @@ class protein:
 
         if not sld:
             val_sq = self.map(prop)
-            info = None
+            info = ''
         if sld:
             val_sq = self.map_sld_wdw(prop, wd)
             info = " using a sliding window of the width " + str(wd)
@@ -146,7 +146,7 @@ class protein:
 
         layout = {
             "title": {
-                "text": str(prop) + info
+                "text": str(prop) + str(info)
             },
             "xaxis": {
                 "title": "sequence"
@@ -158,7 +158,7 @@ class protein:
 
         fig = go.Figure(data=data, layout=layout)
         fig.show()
-        return
+        return fig
 
 
 if __name__ == "__main__":
@@ -166,8 +166,8 @@ if __name__ == "__main__":
     # print(lookup_dict)
 
     # [E] P32249
-    gpcr183 = protein("P32249", lookup_dict)
+    gpcr183 = Protein("P32249", lookup_dict)
     # print(type(gpcr183.get_data()))  # str
 
-    gpcr183.plot("hydropathy index (Kyte-Doolittle method)", sld=True, wd=10)
+    # gpcr183.plot("hydropathy index (Kyte-Doolittle method)", sld=True, wd=10)
     print("HUURRA")
