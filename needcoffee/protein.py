@@ -73,7 +73,7 @@ class Protein:
         r = requests.get(url)
 
         # maybe integrate protein name later
-        protein_file = "../data/" + self.protein_id + ".fasta"
+        protein_file = "C:/Users/laura/PycharmProjects/fufezan-lab-advanced_python_2020-21_HD_fork/data/" + self.protein_id + ".fasta"
 
         # recycle from ex03
         with open(protein_file) as file:
@@ -164,7 +164,7 @@ class Protein:
 
 
 if __name__ == "__main__":
-    lookup_dict = get_lookup_dict(pd.read_csv("../data/amino_acid_properties.csv"))
+    lookup_dict = get_lookup_dict(pd.read_csv("C:/Users/laura/PycharmProjects/fufezan-lab-advanced_python_2020-21_HD_fork/data/amino_acid_properties.csv"))
     # print(lookup_dict)
 
     # [E] P32249
@@ -172,4 +172,4 @@ if __name__ == "__main__":
     # print(type(gpcr183.get_data()))  # str
 
     # gpcr183.plot("hydropathy index (Kyte-Doolittle method)", sld=True, wd=10)
-    print("HUURRA")
+    # print("HUURRA")
