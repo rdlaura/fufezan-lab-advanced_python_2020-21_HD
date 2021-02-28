@@ -31,7 +31,8 @@ cdf.rename(
         "countryterritoryCode": "region_code",
         "popData2019": "pop_2019",
         "continentExp": "continent",
-        "notification_rate_per_100000_population_14-days": "14d_incidence"
+        "Cumulative_number_for_14_days_of_COVID-19_cases_per_100000": "14d_incidence"
+        # "notification_rate_per_100000_population_14-days": "14d_incidence"
     },
     inplace=True
 )
@@ -53,10 +54,11 @@ cdf["delta_t"] = cdf.date_reported - strg_date
 cdf.dropna(inplace=True)  # 10647 to 10408
 
 # cdf = cdf[cdf.cases_weekly >= 0 and cdf.deaths_weekly >= 0 and cdf.pop_2019 >= 0 and cdf["14d_incidence"] >= 0]
-cdf = cdf[cdf.cases_weekly >= 0]  # 10400
-cdf = cdf[cdf.deaths_weekly >= 0]  # 10398
-cdf = cdf[cdf.pop_2019 >= 0]
-cdf = cdf[cdf["14d_incidence"] >= 0]  # 10395
+# cdf = cdf[cdf.cases_weekly >= 0]  # 10400
+# cdf = cdf[cdf.deaths_weekly >= 0]  # 10398
+# cdf = cdf[cdf.pop_2019 >= 0]
+# cdf = cdf[cdf["14d_incidence"] >= 0]  # 10395
+
 
 # check for too new dates
 # today = datetime.datetime.now()  # Out: datetime.datetime(2021, 2, 10, 14, 50, 45, 791778)
@@ -109,6 +111,11 @@ cdf = cdf[cdf.date_reported < cut]  # 10395 --> no cuts because dates checked in
 # o_a_dec = (fluctuation['highest decrease region'].iloc[fluctuation['decrease'].idxmin], min(fluctuation['decrease']))
 # o_a_inc = (fluctuation['highest increase region'].iloc[fluctuation['increase'].idxmax], max(fluctuation['increase']))
 
+# print('The region with the overall lowest fluctuation of the 14 days incidence was ' + str(o_a_dec[0]) +
+#       ' with a decrease of ' + str(o_a_dec[1]))
+# print('The region with the overall highest fluctuation of the 14 days incidence was ' + str(o_a_inc[0]) +
+#       ' with an increase of ' + str(round(o_a_inc[1], 2)))
+
 # attempt considering year
 
 help_lst = []
@@ -138,37 +145,32 @@ fluctuation_by_year = pd.DataFrame(help_lst_cont,
                                    columns=['year', 'highest decrease region', 'decrease',
                                             'highest increase region', 'increase'])
 
-# print('The region with the overall lowest flucuation of the 14 days incidence was ' + str(o_a_dec[0]) +
-#       ' with a decrease of ' + str(o_a_dec[1]))
-# print('The region with the overall highest flucuation of the 14 days incidence was ' + str(o_a_inc[0]) +
-#       ' with an increase of ' + str(round(o_a_inc[1], 2)))
-
 # plot incidence of european countries
-continent = 'Europe'
-continent_grp = cdf.groupby('continent').get_group(continent)
+# continent = 'Europe'
+# continent_grp = cdf.groupby('continent').get_group(continent)
 
 # create figure and add trace for each country
-fig = go.Figure()
-
-for region, cont_region in continent_grp.groupby('region'):
-    fig.add_trace(go.Scatter(
-        x=cont_region.set_index('delta_t').sort_index()['date_reported'],
-        y=cont_region.set_index('delta_t').sort_index()['14d_incidence'],
-        mode='lines',
-        name=region
-    ))
-
-fig.update_layout({
-    "title": {
-        "text": '14 day incidence in ' + str(continent)
-    },
-    "xaxis": {
-        "title": 'Time'
-    },
-    "yaxis": {
-        "title": '14 day incidence'
-    }
-})
+# fig = go.Figure()
+#
+# for region, cont_region in continent_grp.groupby('region'):
+#     fig.add_trace(go.Scatter(
+#         x=cont_region.set_index('delta_t').sort_index()['date_reported'],
+#         y=cont_region.set_index('delta_t').sort_index()['14d_incidence'],
+#         mode='lines',
+#         name=region
+#     ))
+#
+# fig.update_layout({
+#     "title": {
+#         "text": '14 day incidence in ' + str(continent)
+#     },
+#     "xaxis": {
+#         "title": 'Time'
+#     },
+#     "yaxis": {
+#         "title": '14 day incidence'
+#     }
+# })
 
 # fig.show()  # done --> yay
 
