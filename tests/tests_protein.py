@@ -149,13 +149,70 @@ def test_map_sld_wdw():
                                2.167, 2.179, 2.181, 2.174, 2.191, 2.181, 1.953, 1.717, 1.535, 1.314, 1.0959999999999999,
                                0.875, 0.6539999999999999, 0.45199999999999996, 0.21800000000000003]
 
+
 def test_plot():
+    # without sliding window
     protein_test = Protein('P32249', tf.get_lookup_dict(pd.read_csv("../data/amino_acid_properties.csv")))
     fig = protein_test.plot('pka1')
-    assert fig
+
+    nb_sq_test = []
+    for pos, aa in enumerate(protein_test.get_data()):
+        nb_sq_test.append(str(pos))
+
+    val_sq_test = protein_test.map('pka1')
+
+    data_test = [
+        go.Bar(
+            x=nb_sq_test,
+            y=val_sq_test
+        )
+    ]
+
+    layout_test = {
+        "title": {
+            "text": 'pka1'
+        },
+        "xaxis": {
+            "title": "sequence"
+        },
+        "yaxis": {
+            "title": 'pka1'
+        }
+    }
+
+    assert fig == go.Figure(data=data_test, layout=layout_test)
+
 
 def test_plot_2():
+    # with sliding window
+    protein_test = Protein('P32249', tf.get_lookup_dict(pd.read_csv("../data/amino_acid_properties.csv")))
+    fig = protein_test.plot('pka1', sld=True, wd=10)
 
-    assert
+    nb_sq_test = []
+    for pos, aa in enumerate(protein_test.get_data()):
+        nb_sq_test.append(str(pos))
+
+    val_sq_test = protein_test.map_sld_wdw('pka1', 10)
+
+    data_test = [
+        go.Bar(
+            x=nb_sq_test,
+            y=val_sq_test
+        )
+    ]
+
+    layout_test = {
+        "title": {
+            "text": 'pka1 using a sliding window of the width 10'
+        },
+        "xaxis": {
+            "title": "sequence"
+        },
+        "yaxis": {
+            "title": 'pka1'
+        }
+    }
+
+    assert fig == go.Figure(data=data_test, layout=layout_test)
 
 # pytest --cov-report html --cov=needcoffee tests/
